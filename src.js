@@ -144,39 +144,39 @@
 //         console.log("REJECT:", error.message);
 //     });
 /////////////////////////////
-const apis = [
-    "https://jsonplaceholder.typicode.com/users",
-    "https://jsonplaceholder.typicode.com/posts"
-];
+// const apis = [
+//     "https://jsonplaceholder.typicode.com/users",
+//     "https://jsonplaceholder.typicode.com/posts"
+// ];
 
-async function getApis (apis) {
-    const requests = apis.map(api => {
-       return fetch(api)
-           .then(response => {
-            if(!response.ok){
-                throw new Error("Something went wrong!")
-            }
-            return response.json();
-           });
-    });
-    return Promise.all(requests);
-}
+// async function getApis (apis) {
+//     const requests = apis.map(api => {
+//        return fetch(api)
+//            .then(response => {
+//             if(!response.ok){
+//                 throw new Error("Something went wrong!")
+//             }
+//             return response.json();
+//            });
+//     });
+//     return Promise.all(requests);
+// }
  
- async function main() {
-    const loading = document.getElementById("loading");
-    const usersList = document.getElementById("users");
-    const x = await getApis(apis);
-    const users = x[0];
-    users.forEach(user => {
-        const li = document.createElement("li");
-        li.textContent = user.name;
-        usersList.appendChild(li);
-    });
-    loading.style.display = "none";
-        console.log ("Resolve",x);
+//  async function main() {
+//     const loading = document.getElementById("loading");
+//     const usersList = document.getElementById("users");
+//     const x = await getApis(apis);
+//     const users = x[0];
+//     users.forEach(user => {
+//         const li = document.createElement("li");
+//         li.textContent = user.name;
+//         usersList.appendChild(li);
+//     });
+//     loading.style.display = "none";
+//         console.log ("Resolve",x);
         
-}
-  main();
+// }
+//   main();
 ////////////////////
 
 //////////////////////////
@@ -241,3 +241,38 @@ async function getApis (apis) {
 //      "https://jsonplaceholder.typicode.com/posts"
 // ];
 
+////////////////////////////
+function getUser() {
+  return new Promise((resolve, reject) => {
+    fetch("https://jsonplaceholder.typicode.com/users/1")
+      .then((response) => {
+        if (!response.ok) {
+          reject(new Error("Something went wrong"));
+          return;
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+getUser()
+  .then((data) => {
+    console.log("Step 1:", data);
+    return "Processing data...";
+  })
+  .then((message) => {
+    console.log("Step 2:", message);
+  })
+  .catch((error) => {
+    console.error("Error:", error.message);
+  })
+  .finally(() => {
+    console.log("Operation complete.");
+  });
