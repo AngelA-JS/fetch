@@ -143,3 +143,101 @@
 //     .catch(error => {
 //         console.log("REJECT:", error.message);
 //     });
+/////////////////////////////
+const apis = [
+    "https://jsonplaceholder.typicode.com/users",
+    "https://jsonplaceholder.typicode.com/posts"
+];
+
+async function getApis (apis) {
+    const requests = apis.map(api => {
+       return fetch(api)
+           .then(response => {
+            if(!response.ok){
+                throw new Error("Something went wrong!")
+            }
+            return response.json();
+           });
+    });
+    return Promise.all(requests);
+}
+ 
+ async function main() {
+    const loading = document.getElementById("loading");
+    const usersList = document.getElementById("users");
+    const x = await getApis(apis);
+    const users = x[0];
+    users.forEach(user => {
+        const li = document.createElement("li");
+        li.textContent = user.name;
+        usersList.appendChild(li);
+    });
+    loading.style.display = "none";
+        console.log ("Resolve",x);
+        
+}
+  main();
+////////////////////
+
+//////////////////////////
+// const apis = [
+//     "https://jsonplaceholder.typicode.com/users",
+//     "https://jsonplaceholder.typicode.com/posts"
+// ];
+
+
+// function getData(apis, isAllSettled) {
+//     const requests = apis.map((api) => {
+//         return fetch(api)
+//           .then((response) => {
+//             if(!response.ok){
+//              throw new Error("Something went wrong!")
+//             }
+//             return  response.json();
+//           });
+//     });
+//     return isAllSettled ?  Promise.allSettled(requests) : Promise.all(requests);
+// }
+// getData(apis, false)
+//    .then((result) => {
+//       console.log(result)
+//    })
+//    .catch((error) => {
+//         console.log("ERROR:", error.message);
+//     });
+
+//////////////////////
+
+// const apis = [
+//     "https://jsonplaceholder.typicode.com/users",
+//     "https://jsonplaceholder.typicode.com/posts"
+// ];
+
+// function getData(apis , isAllSettled){
+//     const requests = apis.map((api) =>{
+//         return fetch(api)
+//         .then((response)=>{
+//             if(!response.ok){
+//                 throw new Error ("Something went wrong!");
+//             }
+//             return response.json();
+//         });
+//     });
+//     return isAllSettled ? Promise.allSettled(requests) : Promise.all(requests);
+// }
+
+// getData(apis, false)
+//  .then((result) => {
+//     console.log(result)
+//  })
+//  .catch(error=>{
+//     console.log("Error:", error.message);
+//  });
+
+//////////race\\\\\\\\\\\\\\\\\\\\\
+
+// const apis = [
+//     "https://jsonplaceholder.typicode.com/users",
+//      "https://jsonplaceholder.typicode.com/posts"
+// ];
+
